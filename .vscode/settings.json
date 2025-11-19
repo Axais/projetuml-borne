@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "lecteurcarte.h": "c",
+        "baseclient.h": "c",
+        "donnees_borne.h": "c"
+    }
+}
