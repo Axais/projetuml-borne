@@ -1,6 +1,12 @@
 lecteurcarte.o: lecteurcarte.c /shared/TCii/include/lcarte.h baseclient.h \
- lecteurcarte.h /shared/TCii/include/memoire_borne.h \
+ voyants.h timer.h lecteurcarte.h /shared/TCii/include/memoire_borne.h \
  /shared/TCii/include/donnees_borne.h
 borne.o: borne.c /shared/TCii/include/memoire_borne.h \
- /shared/TCii/include/donnees_borne.h lecteurcarte.h
+ /shared/TCii/include/donnees_borne.h voyants.h timer.h lecteurcarte.h
 baseclient.o: baseclient.c baseclient.h
+voyants.o: voyants.c voyants.h /shared/TCii/include/memoire_borne.h \
+ /shared/TCii/include/donnees_borne.h /shared/TCii/include/lcarte.h \
+ /shared/TCii/include/donnees_borne.h baseclient.h
+timer.o: timer.c voyants.h /shared/TCii/include/donnees_borne.h \
+ /shared/TCii/include/memoire_borne.h \
+ /shared/TCii/include/donnees_borne.h

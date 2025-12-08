@@ -2,58 +2,62 @@
 #include <stdio.h>
 #include <memoire_borne.h>
 #include <lcarte.h>
-//#include <mem_sh.h>
-//#include <donnees.h>
 #include <donnees_borne.h>
-//#include <memoire_borne.h>
-//#include <lecteurcarte.h>
 #include <baseclient.h>
-//#include <l_carte.h>
+#include <unistd.h>
 
 
-entrees *io;
-int shmid;
-int depart_timer;
+entrees *io_voyants;
+int shmid_voyants;
+int depart_timer_voyants;
 
-void timer_initialiser()
+void voyants_initialiser()
 {
-    io=acces_memoire(&shmid);
+    io_voyants=acces_memoire(&shmid_voyants);
     /* associe la zone de memoire partagee au pointeur */
-    if (io==NULL) printf("Erreur pas de mem sh\n");
-        depart_timer=io->timer_sec;
-    
+    if (io_voyants==NULL) printf("Erreur pas de mem sh voyants\n");
+    depart_timer_voyants=io_voyants->timer_sec;
 }
 
 void blink_charge(){
-    if (((io->timer_sec - depart_timer) % 2) == 0){
-        if (baseclient_authentifier(lecture_numero_carte())==1){
-            io->led_charge = VERT;
+    if (((io_voyants->timer_sec - depart_timer_voyants) % 2) == 0){ // Toutes les 2 secondes
+            io_voyants->led_charge = VERT; 
         } else {
-            io->led_charge = ROUGE;
+            io_voyants->led_charge = OFF;
         }
-    } else {
-        io->led_charge = OFF;
-    }
+    
+    usleep(100000); // Pause de 0.1 seconde pour éviter un clignotement trop rapide
 }
 
+void blink_defaut(){
+    if (((io_voyants->timer_sec - depart_timer_voyants) % 2) == 0){ // Toutes les 2 secondes
+            io_voyants->led_defaut = ROUGE;
+        } else {
+            io_voyants->led_defaut = OFF;
+        }
+    
+    usleep(100000); // Pause de 0.1 seconde pour éviter un clignotement trop rapide
+}
 void set_charge()
 {
-    if(io->bouton_charge==1){
-        io->led_charge = VERT;
+    if(io_voyants->bouton_charge==1){
+        io_voyants->led_charge = VERT;
     } else {
-        io->led_charge = OFF;
+        io_voyants->led_charge = OFF;
     }
 
 }
+
 
 void set_dispo()
 {
     if(carte_inseree()){
-        io->led_charge = OFF;
+        io_voyants->led_dispo = OFF;
     } else {
-        io->led_charge = VERT;
+        io_voyants->led_dispo = VERT;
     }
 }
+
 
 int dispo()
 {
